@@ -4,38 +4,34 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# Aliases, maybe move to bash_aliases later
 alias ls='ls --color=auto'
+alias rl='cd ~; source .bashrc' # Reload .bashrc
+
 # PS1='[\u@\h \W]\$ '
+# Prompt with git branch
+PS1="[\w]\$(git branch 2> /dev/null | grep '^*' | colrm 1 2 | xargs -I BRANCH echo -n \"(BRANCH)\")\$ "
 
-FMT_RESET="\e[0m"
-FG_WHITE="\e[97m"
-FG_BLACK="\[\e[30m\]"
+# Dev command
+# Type dev and a directory inside ~/Code to start vscodium in that directory
+# If package.json exists with dev script it will also run npm run dev
+function dev() {
+  TARGET_DIRECTORY=~/Code/"$1"
+  cd ${TARGET_DIRECTORY} || return
+  codium .
+  if [ -f "${TARGET_DIRECTORY}/package.json" ]; then
+    DEV_COMMAND=$(jq ".scripts.dev" < "${TARGET_DIRECTORY}/package.json")
+    if [ "$DEV_COMMAND" != "null" ]; then
+      npm run dev
+    fi
+  fi
+}
 
-BG_CYAN="\[\e[46m\]"
-FG_CYAN="\[\e[36m\]"
-BG_BLUE="\e[44m"
-FG_BLUE="\e[34m"
-BG_MAGENTA="\e[45m"
-FG_MAGENTA="\e[35m"
-BG_GREEN="\[\e[42m\]"
-FG_GREEN="\[\e[32m\]"
-
-PS1=""
-PS1+="${BG_MAGENTA}${FG_WHITE}"
-PS1+=" \u "
-PS1+="${FMT_RESET}${FG_MAGENTA}"
-
-PS1+="${BG_BLUE}${FG_WHITE}"
-PS1+=" \w "
-PS1+="${FMT_RESET}${FG_BLUE}"
-
-PS1+="\$(git branch 2> /dev/null | grep '^*' | colrm 1 2 | xargs -I BRANCH echo -n \""
-PS1+="${BG_GREEN}${FG_WHITE}"
-PS1+=" BRANCH "
-PS1+="${FMT_RESET}${FG_GREEN}\")"
-
-PS1+="${FMT_RESET} \n \$ "
-
-#PS1="[\W]\$(git branch 2> /dev/null | grep '^*' | colrm 1 2 | xargs -I BRANCH echo -n \"(BRANCH)\")\$ "
+# Autocomplete dev command
+# Lists directories inside ~/Code
+_dev () {
+  local cur=${COMP_WORDS[COMP_CWORD]}
+  COMPREPLY=( $(compgen -W "$(ls ~/Code/)" -- $cur) )
+} && complete -F _dev dev
 
 source /usr/share/nvm/init-nvm.sh
