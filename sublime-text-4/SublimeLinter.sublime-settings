@@ -1,0 +1,25 @@
+// SublimeLinter Settings - User
+{
+  "linters": {
+    "eslint": {
+      "disable": false,
+      "disable_if_not_dependency": true,
+      "selector": "source.js, source.jsx"
+    }
+  },
+  "styles": [
+    {
+      "scope": "region.yellowish markup.warning.sublime_linter",
+      "types": ["warning"]
+    },
+    {
+      "priority": 1,
+      "icon": "dot",
+      "mark_style": "fill",
+      "scope": "region.redish markup.error.sublime_linter"
+    }
+  ],
+  "paths": {
+    "linux": ["/usr/bin/node"]
+  }
+}

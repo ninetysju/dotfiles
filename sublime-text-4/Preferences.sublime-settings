@@ -1,0 +1,19 @@
+{
+	"ignored_packages":
+	[
+		"Vintage",
+	],
+	"theme": "Adaptive.sublime-theme",
+	"color_scheme": "Packages/Color Scheme - Default/Mariana.sublime-color-scheme",
+	"font_size": 12,
+	"tab_size": 2,
+	"translate_tabs_to_spaces": true,
+	"highlight_line": true,
+	"line_padding_top": 1,
+	"line_padding_bottom": 1,
+	"ensure_newline_at_eof_on_save": true,
+	"file_tab_style": "square",
+	"bold_folder_labels": true,
+	"hide_tab_scrolling_buttons": true,
+	"trim_trailing_white_space_on_save": "all",
+}
